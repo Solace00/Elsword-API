@@ -1,3 +1,4 @@
+using Elsword_API.Services;
 
 namespace Elsword_API
 {
@@ -10,6 +11,9 @@ namespace Elsword_API
             // Add services to the container.
 
             builder.Services.AddControllers();
+
+            // Register DungeonScraper with HttpClient
+            builder.Services.AddHttpClient<DungeonScraper>();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
