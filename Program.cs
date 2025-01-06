@@ -21,6 +21,18 @@ namespace Elsword_API
             // Register SkillScraper with HttpClient
             builder.Services.AddHttpClient<SkillScraper>();
 
+            // Add the mapping file paths to the configuration
+            var dungeonsFilePath = Path.Combine(Directory.GetCurrentDirectory(), "Data", "dungeons.json");
+
+            // Add the JSON file paths to the configuration
+            builder.Configuration.AddInMemoryCollection(new Dictionary<string, string>
+            {
+                { "DungeonsFilePath", dungeonsFilePath }
+            });
+
+            // Register MappingService
+            builder.Services.AddSingleton<MappingService>();
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
