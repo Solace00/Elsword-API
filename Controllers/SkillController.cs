@@ -7,7 +7,7 @@ using System;
 namespace Elsword_API.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/search/[controller]")]
     public class SkillController : ControllerBase
     {
         private readonly SkillScraper _skillScraper;

@@ -1,0 +1,41 @@
+{
+  "15849414": {
+    "name": "Fabricated City",
+    "short_name": "20-1",
+    "other_aliases": [ "car", "" ]
+  },
+  "15849436": {
+    "name": "Android Factory",
+    "short_name": "20-2",
+    "other_aliases": [ "Factory", "" ]
+  },
+  "15849450": {
+    "name": "Madame Corae's Garden",
+    "short_name": "20-3",
+    "other_aliases": [ "Garden", "Madame" ]
+  },
+  "15849440": {
+    "name": "Serpentium Tower [Stage 1]",
+    "short_name": "20-4",
+    "other_aliases": [ "d1" ]
+  },
+  "15849470": {
+    "name": "Orchestra Hall [Stage 1]",
+    "short_name": "20-5",
+    "other_aliases": [ "d1" ]
+  },
+  "": {
+    "name": "",
+    "short_name": "",
+    "other_aliases": [ "" ]
+  },
+  "": {
+    "name": "",
+    "short_name": "",
+    "other_aliases": [ "" ]
+  }
+
+
+
+
+}
