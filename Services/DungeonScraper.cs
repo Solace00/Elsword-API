@@ -137,13 +137,13 @@ namespace Elsword_API.Services
                             PhysicalDefense = ExtractBossStatValue(node, "shield-halved", "rgb(186, 20, 11)") ?? "Physical defense not found.",
                             MagicalDefense = ExtractBossStatValue(node, "shield-halved", "rgb(31, 165, 237)") ?? "Magical defense not found.",
                             FreezeDuration = ExtractBossStatValue(node, "snowflake") ?? "Freeze duration not found.",
-                            PetrifyDuration = ExtractBossStatValue(node, "lock") ?? "Petrify duration not found.",
-                            FireResistance = ExtractBossStatValue(node, "fire") ?? "Fire resistance not found.",
-                            WaterResistance = ExtractBossStatValue(node, "water") ?? "Water resistance not found.",
-                            WindResistance = ExtractBossStatValue(node, "wind") ?? "Wind resistance not found.",
-                            NatureResistance = ExtractBossStatValue(node, "seedling") ?? "Nature resistance not found.",
-                            LightResistance = ExtractBossStatValue(node, "bolt") ?? "Light resistance not found.",
-                            DarkResistance = ExtractBossStatValue(node, "moon") ?? "Dark resistance not found."
+                    PetrifyDuration = ExtractBossStatValue(node, "lock") ?? "Petrify duration not found.",
+                    FireResistance = ExtractBossStatValue(node, "fire") ?? "Fire resistance not found.",
+                    WaterResistance = ExtractBossStatValue(node, "water") ?? "Water resistance not found.",
+                    WindResistance = ExtractBossStatValue(node, "wind") ?? "Wind resistance not found.",
+                    NatureResistance = ExtractBossStatValue(node, "seedling") ?? "Nature resistance not found.",
+                    LightResistance = ExtractBossStatValue(node, "bolt") ?? "Light resistance not found.",
+                    DarkResistance = ExtractBossStatValue(node, "moon") ?? "Dark resistance not found."
                         };
 
                         bossStats.Add(bossStatsItem);
