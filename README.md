@@ -33,13 +33,16 @@ Elsword API is a web service that scrapes and provides data about dungeons in th
 1. Clone the repository:
 
 
-##Contributing
+## Contributing
+
 Contributions are welcome! Please open an issue or submit a pull request.
 
-##License
+## License
+
 This project is licensed under the MIT License. See the LICENSE file for details.
 
-##Contact
+## Contact
+
 For questions or suggestions, please contact me on discord le_frenny.
 
    
