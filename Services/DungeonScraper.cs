@@ -43,44 +43,50 @@ namespace Elsword_API.Services
 
         private string ExtractDungeonName(HtmlDocument doc)
         {
-            var nameNode = doc.DocumentNode.SelectSingleNode("//div[contains(@class, 'dungeon_page_dungeon_title__0wRCr')]");
+            var nameNode = doc.DocumentNode.SelectSingleNode("//div[contains(@class, 'dungeon_page_dungeon_title__0wRCr')]//h1");
             return nameNode?.InnerText.Trim() ?? "Name not found.";
         }
 
         private string ExtractDungeonDescription(HtmlDocument doc)
         {
-            var descriptionNode = doc.DocumentNode.SelectSingleNode("//div[contains(@class, 'dungeon_page_description_iUzFm')]");
-            return descriptionNode.InnerText ?? "Description not found.";
+            var descriptionNode = doc.DocumentNode.SelectSingleNode("//div[contains(@class, 'dungeon_page_description__iUzFm')]");
+            if (descriptionNode != null)
+            {
+                var paragraphs = descriptionNode.SelectNodes(".//span[@style='white-space: pre-line;']")
+                    ?.Select(p => p.InnerText.Trim());
+                return paragraphs != null ? string.Join(" ", paragraphs) : "Description not found.";
+            }
+            return "Description not found.";
         }
 
         private string ExtractCombatPowerRequired(HtmlDocument doc)
         {
-            var combatPowerNode = doc.DocumentNode.SelectSingleNode("//div[contains(@class, 'dungeon_page_combat_power__lIwnu')]");
+            var combatPowerNode = doc.DocumentNode.SelectSingleNode("//div[contains(@class, 'fa-burst')]/following-sibling::span[contains(@class, 'dungeon_page_combat_power__lIwnu')]");
             return combatPowerNode?.InnerText.Trim() ?? "Combat power not found.";
         }
 
         private string ExtractLevelRequirement(HtmlDocument doc)
         {
-            var levelRequirementNode = doc.DocumentNode.SelectSingleNode("//div[contains(@class, 'dungeon_page_entry_data__31fok')]//div[contains(@class, 'fa-angles-up')]/following-sibling::strong");
+            var levelRequirementNode = doc.DocumentNode.SelectSingleNode("//div[contains(@class, 'fa-angles-up')]/following-sibling::strong");
             return levelRequirementNode?.InnerText.Trim() ?? "Level requirement not found.";
         }
 
         private string ExtractRegionDebuff(HtmlDocument doc)
         {
-            var debuffNode = doc.DocumentNode.SelectSingleNode("//div[contains(@class, 'dungeon_page_entry_data__31fok')]//div[contains(@class, 'fa-virus')]/following-sibling::strong");
+            var debuffNode = doc.DocumentNode.SelectSingleNode("//div[contains(@class, 'fa-virus')]/following-sibling::strong");
             return debuffNode?.InnerText.Trim() ?? "Region debuff not found.";
         }
 
         private string ExtractNumberOfPlayers(HtmlDocument doc)
         {
-            var playersNode = doc.DocumentNode.SelectSingleNode("//div[contains(@class, 'dungeon_page_entry_data__31fok')]//div[contains(@class, 'fa-person')]/following-sibling::span/strong");
+            var playersNode = doc.DocumentNode.SelectSingleNode("//div[contains(@class, 'fa-person')]/following-sibling::span/strong");
             return playersNode?.InnerText.Trim() ?? "Number of players not found.";
         }
 
         private string ExtractResurrectionLimit(HtmlDocument doc)
         {
-            var resurrectionNode = doc.DocumentNode.SelectSingleNode("//div[contains(@class, 'dungeon_page_entry_data__31fok')]//div[contains(@class, 'fa-skull-crossbones')]/following-sibling::strong");
-            return resurrectionNode?.InnerText.Trim() ?? null; // Return null if not found
+            var resurrectionNode = doc.DocumentNode.SelectSingleNode("//div[contains(@class, 'fa-skull-crossbones')]/following-sibling::strong");
+            return resurrectionNode?.InnerText.Trim() ?? string.Empty; // Return empty string if not found
         }
 
         private static List<FeaturedDrops> ExtractFeaturedDrops(HtmlDocument doc)
@@ -149,8 +155,12 @@ namespace Elsword_API.Services
 
         private string ExtractBossStatValue(HtmlNode node, string iconName, int occurrence = 0)
         {
-            var statNode = node.SelectNodes($".//svg[contains(@data-icon, '{iconName}')]/following-sibling::span[@class='dungeon_page_stat_value__a0Hkk']")[occurrence];
-            return statNode?.InnerText.Trim();
+            var statNodes = node.SelectNodes($".//svg[contains(@data-icon, '{iconName}')]/following-sibling::span[@class='dungeon_page_stat_value__a0Hkk']");
+            if (statNodes != null && statNodes.Count > occurrence)
+            {
+                return statNodes[occurrence]?.InnerText.Trim();
+            }
+            return null; // Return null if the node is not found
         }
 
         private string ExtractBossResistance(HtmlNode node, string iconName)
