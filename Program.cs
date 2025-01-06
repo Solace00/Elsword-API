@@ -18,6 +18,9 @@ namespace Elsword_API
             // Register ElwikiScraper with HttpClient
             builder.Services.AddHttpClient<ElwikiInfoScraper>();
 
+            // Register SkillScraper with HttpClient
+            builder.Services.AddHttpClient<SkillScraper>();
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
