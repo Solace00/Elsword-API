@@ -8,7 +8,7 @@ app.use('/api', createProxyMiddleware({
     target: 'https://cobodex.eu', // Target server
     changeOrigin: true,
     pathRewrite: {
-        '^/api': '', // Remove /api prefix when forwarding to the target server
+        '^/api': '', 
     },
 }));
 
