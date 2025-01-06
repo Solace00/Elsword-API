@@ -65,7 +65,7 @@ namespace Elsword_API.Services
             {
                 var cooldownValueNode = cooldownNode.SelectSingleNode(".//span[2]/span[1]");
                 if (cooldownValueNode != null)
-                {
+            {
                     return cooldownValueNode.InnerText.Trim() + " sec";
                 }
             }
@@ -80,7 +80,8 @@ namespace Elsword_API.Services
 
         private string ExtractSkillImageUrl(HtmlDocument doc)
         {
-            var imageNode = doc.DocumentNode.SelectSingleNode("//div[@class='skill_skill__9coMp']//img");
+            // Update the XPath to correctly find the <img> tag
+            var imageNode = doc.DocumentNode.SelectSingleNode("//div[contains(@class, 'skill_skill__9coMp')]//img");
             return imageNode?.GetAttributeValue("src", "Image not found");
         }
 
