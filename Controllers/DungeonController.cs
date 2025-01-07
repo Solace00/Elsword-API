@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Elsword_API.Services;
+using Elsword_API.Models;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,33 +20,53 @@ namespace Elsword_API.Controllers
             _mappingService = mappingService;
         }
 
-        // Handle requests with path parameters like /api/search/Dungeon/15849414
         [HttpGet("{idOrAlias}")]
         public async Task<IActionResult> GetDungeonByIdOrAlias(string idOrAlias)
         {
-            string dungeonId = ResolveDungeonId(idOrAlias);
-            if (string.IsNullOrEmpty(dungeonId))
+            var dungeonIds = ResolveDungeonIds(idOrAlias);
+            if (dungeonIds == null || !dungeonIds.Any())
             {
                 return NotFound("Dungeon not found.");
             }
 
-            var dungeon = await _dungeonScraper.ScrapeDungeonsAsync(dungeonId);
-            if (dungeon == null)
+            var dungeons = new List<Dungeons>();
+            var allAliases = new List<string>();
+
+            foreach (var dungeonId in dungeonIds)
+            {
+                var dungeonMeta = _mappingService.Dungeons[dungeonId];
+                if (dungeonMeta.OtherAliases != null)
+                {
+                    allAliases.AddRange(dungeonMeta.OtherAliases);
+                }
+
+                var dungeon = await _dungeonScraper.ScrapeDungeonsAsync(dungeonId);
+                if (dungeon != null)
+                {
+                    dungeons.Add(dungeon);
+                }
+            }
+
+            allAliases = allAliases.Distinct().ToList();
+
+            if (!dungeons.Any())
             {
                 return NotFound("Dungeon not found.");
             }
 
-            return Ok(dungeon);
+            return Ok(new { Dungeons = dungeons, Aliases = allAliases });
         }
 
-        private string ResolveDungeonId(string idOrAlias)
+        private List<string> ResolveDungeonIds(string idOrAlias)
         {
+            var matchedIds = new List<string>();
+
             if (!string.IsNullOrEmpty(idOrAlias))
             {
                 // Check if idOrAlias is a direct ID
                 if (_mappingService.Dungeons.ContainsKey(idOrAlias))
                 {
-                    return idOrAlias;
+                    matchedIds.Add(idOrAlias);
                 }
 
                 // Check if idOrAlias matches any alias
@@ -56,12 +78,12 @@ namespace Elsword_API.Controllers
                         string.Equals(dungeon.ShortName, idOrAlias, System.StringComparison.OrdinalIgnoreCase) ||
                         aliases.Any(a => string.Equals(a, idOrAlias, System.StringComparison.OrdinalIgnoreCase)))
                     {
-                        return kvp.Key;
+                        matchedIds.Add(kvp.Key);
                     }
                 }
             }
 
-            return null;
+            return matchedIds;
         }
     }
 }

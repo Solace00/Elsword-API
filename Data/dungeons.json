@@ -24,24 +24,50 @@
     "short_name": "20-5",
     "other_aliases": [ "d1" ]
   },
-  "": {
-    "name": "",
-    "short_name": "",
-    "other_aliases": [ "" ]
+  "15849460": {
+    "name": "Serpentium Tower [Stage 2]",
+    "short_name": "20-4 d2",
+    "other_aliases": [ "d2" ]
   },
-  "": {
-    "name": "",
-    "short_name": "",
-    "other_aliases": [ "" ]
+  "15849346": {
+    "name": "Orchestra Hall [Stage 2]",
+    "short_name": "20-5 d2",
+    "other_aliases": [ "d2" ]
+  },
+  "15849368": {
+    "name": "Serpentium Tower [Stage 3]",
+    "short_name": "20-4 d3",
+    "other_aliases": [ "d3" ]
+  },
+  "15849366": {
+    "name": "Orchestra Hall [Stage 3]",
+    "short_name": "20-5 d3",
+    "other_aliases": [ "d3" ]
+  },
+
+
+  "15848642": {
+    "name": "Palace of Gold Medovine",
+    "short_name": "19-1",
+    "other_aliases": [ "19-1" ]
+  },
+  "15848664": {
+    "name": "Hunter's Hideout",
+    "short_name": "19-2",
+    "other_aliases": [ "19-2" ]
+  },
+  "15848662": {
+    "name": "Torta Arena",
+    "short_name": "19-3",
+    "other_aliases": [ "Torta" ]
+  },
+  "15848684": {
+    "name": "The Great Steel Wall",
+    "short_name": "19-4",
+    "other_aliases": [ "Wall", "wall" ]
   }
 
 
 
 
-=======
-    "other_aliases": ["Factory", ""]
-  }
-
-
->>>>>>> 5e99ed1b1d25962f29ab9b64c45b125ea96565a7
 }
