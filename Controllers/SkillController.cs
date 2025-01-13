@@ -11,23 +11,36 @@ namespace Elsword_API.Controllers
     public class SkillController : ControllerBase
     {
         private readonly SkillScraper _skillScraper;
+        private readonly SkillListScraper _skillListScraper;
 
-        public SkillController(SkillScraper skillScraper)
+        public SkillController(SkillScraper skillScraper, SkillListScraper skillListScraper)
         {
             _skillScraper = skillScraper;
+            _skillListScraper = skillListScraper;
         }
 
-        [HttpGet("{skillId}")]
-        public async Task<IActionResult> GetSkillInfo(string skillId)
+        [HttpGet("{skillNameOrId}")]
+        public async Task<IActionResult> GetSkillInfo(string skillNameOrId)
         {
-            var skillInfo = await _skillScraper.ScrapeSkillInfoAsync(skillId);
-
-            if (skillInfo == null)
+            try
             {
-                return NotFound();
-            }
+                // Ensure the skill list is initialized
+                await _skillListScraper.InitializeSkillListAsync();
 
-            return Ok(skillInfo);
+                var skillInfo = await _skillScraper.ScrapeSkillInfoAsync(skillNameOrId);
+
+                if (skillInfo == null)
+                {
+                    var possibleMatches = _skillListScraper.GetPossibleMatches(skillNameOrId);
+                    return NotFound(new { message = $"Skill '{skillNameOrId}' not found. Did you mean: {string.Join(", ", possibleMatches)}?" });
+                }
+
+                return Ok(skillInfo);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = ex.Message });
+            }
         }
     }
 }

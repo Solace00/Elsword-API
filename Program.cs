@@ -19,13 +19,18 @@ namespace Elsword_API
             builder.Services.AddHttpClient<ElwikiInfoScraper>();
 
             // Register SkillScraper with HttpClient
+            builder.Services.AddHttpClient<SkillListScraper>();
+            builder.Services.AddSingleton<SkillListScraper>();
             builder.Services.AddHttpClient<SkillScraper>();
+            builder.Services.AddScoped<SkillScraper>();
+
+
 
             // Add the mapping file paths to the configuration
             var dungeonsFilePath = Path.Combine(Directory.GetCurrentDirectory(), "Data", "dungeons.json");
 
             // Add the JSON file paths to the configuration
-            builder.Configuration.AddInMemoryCollection(new Dictionary<string, string>
+            builder.Configuration.AddInMemoryCollection(new Dictionary<string, string?>
             {
                 { "DungeonsFilePath", dungeonsFilePath }
             });
@@ -37,7 +42,20 @@ namespace Elsword_API
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll", policy =>
+                {
+                    policy.AllowAnyOrigin()
+                          .AllowAnyMethod()
+                          .AllowAnyHeader();
+                });
+            });
+
             var app = builder.Build();
+
+            app.UseCors("AllowAll");
+
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
