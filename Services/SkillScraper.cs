@@ -56,8 +56,8 @@ namespace Elsword_API.Services
         {
             var mpCostNode = doc.DocumentNode.SelectSingleNode("//div[@class='skill_page_info__EcwTI']/p[contains(text(), 'MP')]");
             return mpCostNode?.InnerText.Trim().Replace(" MP", "") ?? "Not applicable";
-         }
- 
+        }
+
         private string ExtractCooldown(HtmlDocument doc)
         {
             var cooldownNode = doc.DocumentNode.SelectSingleNode("//div[@class='skill_page_info__EcwTI']/p[2]");
@@ -65,7 +65,7 @@ namespace Elsword_API.Services
             {
                 var cooldownValueNode = cooldownNode.SelectSingleNode(".//span[2]/span[1]");
                 if (cooldownValueNode != null)
-            {
+                {
                     return cooldownValueNode.InnerText.Trim() + " sec";
                 }
             }
