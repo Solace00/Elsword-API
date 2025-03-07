@@ -68,6 +68,26 @@
   }
 
 
+  "15848642": {
+    "name": "Palace of Gold Medovine",
+    "short_name": "19-1",
+    "other_aliases": [ "19-1" ]
+  },
+  "15848664": {
+    "name": "Hunter's Hideout",
+    "short_name": "19-2",
+    "other_aliases": [ "19-2" ]
+  },
+  "15848662": {
+    "name": "Torta Arena",
+    "short_name": "19-3",
+    "other_aliases": [ "Torta" ]
+  },
+  "15848684": {
+    "name": "The Great Steel Wall",
+    "short_name": "19-4",
+    "other_aliases": [ "Wall", "wall" ]
+  }
 
 
 
