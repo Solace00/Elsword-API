@@ -11,14 +11,12 @@ namespace Elsword_API.Services
     {
         private readonly HttpClient _httpClient;
         private Dictionary<string, string> _skillNameToIdMap;
-        private HashSet<int> _processedPages; // Track processed pages
         private const int MAX_PAGES = 150; // Safety limit
 
         public SkillListScraper(HttpClient httpClient)
         {
             _httpClient = httpClient;
             _skillNameToIdMap = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-            _processedPages = new HashSet<int>();
         }
 
         public async Task InitializeSkillListAsync()
@@ -30,20 +28,11 @@ namespace Elsword_API.Services
 
             while (currentPage <= MAX_PAGES && hasNextPage)
             {
-                if (_processedPages.Contains(currentPage))
-                {
-                    Console.WriteLine($"Page {currentPage} has already been processed. Skipping.");
-                    break;
-                }
-
                 var url = $"https://cobodex.eu/all_skills?page={currentPage}";
                 Console.WriteLine($"Fetching page {currentPage}: {url}");
                 var response = await _httpClient.GetStringAsync(url);
                 var doc = new HtmlDocument();
                 doc.LoadHtml(response);
-
-                // Log HTML content for debugging
-                Console.WriteLine($"HTML content of page {currentPage}: {doc.DocumentNode.InnerHtml.Substring(0, Math.Min(doc.DocumentNode.InnerHtml.Length, 500))}...");
 
                 var skillNodes = doc.DocumentNode.SelectNodes("//div[contains(@class, 'view_button_view_button__dLwDP')]");
                 if (skillNodes == null || !skillNodes.Any())
@@ -68,7 +57,7 @@ namespace Elsword_API.Services
                         }
                         else
                         {
-                            _skillNameToIdMap[skillName] = skillId;
+                            _skillNameToIdMap[skillName] = skillId; // Map skill name to ID
                             skillsOnThisPage++;
                             totalSkillsMapped++;
                             Console.WriteLine($"Mapped Skill: {skillName} -> {skillId}");
@@ -82,11 +71,15 @@ namespace Elsword_API.Services
 
                 Console.WriteLine($"Page {currentPage}: Mapped {skillsOnThisPage} skills. Total skills mapped: {totalSkillsMapped}");
 
-                // Add current page to processed pages
-                _processedPages.Add(currentPage);
-
                 // Check for next page
-                var nextPageButton = doc.DocumentNode.SelectSingleNode("//button[@aria-label='Go to next page']");
+                var paginationNode = doc.DocumentNode.SelectSingleNode("//nav[@aria-label='pagination navigation']");
+                if (paginationNode == null)
+                {
+                    Console.WriteLine("Pagination node not found. Stopping.");
+                    break;
+                }
+
+                var nextPageButton = paginationNode.SelectSingleNode(".//button[@aria-label='Go to next page']");
                 hasNextPage = nextPageButton != null && !nextPageButton.GetAttributeValue("disabled", "").Equals("disabled", StringComparison.OrdinalIgnoreCase);
 
                 if (!hasNextPage)
